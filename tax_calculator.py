@@ -4,11 +4,29 @@ import math
 st.set_page_config(page_title="計算機 - 含稅試算", layout="centered")
 st.title("🧮 稅務計算機（含稅試算）")
 
+# 初始化 session_state 儲存多個方案
+if "plans" not in st.session_state:
+    st.session_state.plans = {}
+
+# 使用者選擇或新增方案
+st.sidebar.header("📁 計算方案管理")
+current_plan = st.sidebar.selectbox("選擇方案：", list(st.session_state.plans.keys()) + ["➕ 新增方案"], index=0)
+
+if current_plan == "➕ 新增方案":
+    new_name = st.sidebar.text_input("輸入新方案名稱：")
+    if new_name and new_name not in st.session_state.plans:
+        st.session_state.plans[new_name] = ""
+        current_plan = new_name
+        st.experimental_rerun()
+else:
+    st.sidebar.write(f"目前編輯方案：**{current_plan}**")
+
 st.markdown("### ✍️ 請輸入多筆計算式（例如 `1000 + 250 * 2`）")
-user_input = st.text_area("輸入計算內容：", height=200)
+user_input = st.text_area("輸入計算內容：", height=200, value=st.session_state.plans.get(current_plan, "") if current_plan else "")
 
 # -------- 計算處理 --------
 if user_input:
+    st.session_state.plans[current_plan] = user_input
     lines = user_input.strip().split("\n")
     results = []
     total_sum = 0
@@ -43,4 +61,4 @@ if user_input:
 else:
     st.info("請在上方輸入一行一筆的計算式。\n例如：\n1000 + 500*2。 按Ctrl + Enter就可執行")
 
-st.caption("版本：1.1 | 支援多筆計算、自動加總、含稅與稅前試算")
+st.caption("版本：1.2 | 支援多筆計算、自動加總、含稅與稅前試算，支援多方案紀錄")
