@@ -41,6 +41,6 @@ if user_input:
     st.metric("稅前金額（95%）", f"NT$ {tax_excluded:,.2f}")
     st.metric("進項稅（5%）", f"NT$ {tax_value:,.2f}")
 else:
-    st.info("請在上方輸入一行一筆的計算式。\n例如：\n1000 + 500\n200 * 2")
+    st.info("請在上方輸入一行一筆的計算式。\n例如：\n1000 + 500\n200 * 2。 按Ctrl + Enter就可執行")
 
 st.caption("版本：1.1 | 支援多筆計算、自動加總、含稅與稅前試算")
